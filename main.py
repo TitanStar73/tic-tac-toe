@@ -11,6 +11,10 @@ print(r"""
                                                                                             
 """)
 
+input("Enter anything to start: ") #later chose mode here (1 player, 2 player)
+
+print("\n"*100)
+
 X = r""" .----------------. 
 | .--------------. |
 | |  ____  ____  | |
@@ -40,7 +44,7 @@ B = r""" .----------------.
 | |              | |
 | |              | |
 | |              | |
-| |              | |
+| |      L       | |
 | |              | |
 | |              | |
 | |              | |
@@ -79,6 +83,36 @@ class Board:
     def print_board_raw(self):
         for row in self.board:
             print(row)
+    
+    def print_board(self):
+        conversion = {
+            0: self.B,
+            1: self.X,
+            2: self.O
+        }
+        temp_board = [[conversion[cell] for cell in row] for row in self.board]
+        for x,row in enumerate(temp_board):
+            for i in range(len(self.B.split("\n"))):
+                for y,cell in enumerate(row):
+                    temp2 = cell.split("\n")[i]
+                    if 'L' in temp2:
+                        for char in temp2:
+                            if char == 'L':
+                                print(x*3 + y + 1, end="")
+                            else:
+                                print(char, end="")
+                    else:
+                        print(temp2, end="")
+                    
+                    print(" ", end="")
+
+                print("")
+            print("-"*(len(self.B.split("\n")[0])*3 + 2))
 
 board = Board(X,O,B)
-board.print_board_raw()
+
+for x in range(0,9):
+    board.print_board()
+    loc = int(input("Enter location: "))
+    board.place_piece(loc, 1 if x % 2 == 0 else 2)
+    print("\n"*100)
