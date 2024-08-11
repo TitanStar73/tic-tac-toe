@@ -1,3 +1,4 @@
+print("\n"*100)
 print(r"""
  ________  __                  ________                          ________                   
 |        \|  \                |        \                        |        \                  
@@ -97,6 +98,19 @@ O_WIN = """\033[34m
                                                           
 """
 
+DRAW = """
+ /$$$$$$$$ /$$$$$$ /$$$$$$$$ /$$
+|__  $$__/|_  $$_/| $$_____/| $$
+   | $$     | $$  | $$      | $$
+   | $$     | $$  | $$$$$   | $$
+   | $$     | $$  | $$__/   |__/
+   | $$     | $$  | $$          
+   | $$    /$$$$$$| $$$$$$$$ /$$
+   |__/   |______/|________/|__/
+                                                               
+                                
+"""
+
 class Board:
     def __init__(self,X,O,B) -> None:
         self.X = X
@@ -112,6 +126,30 @@ class Board:
         if self.board[(loc-1)//3][(loc-1)%3] == 0:
             return True, ""
         return False, "Cell already occupied"
+
+    def check_win(self):
+        #check rows:
+        for row in self.board:
+            if row[0] == row[1] == row[2] and row[0] != 0:
+                return True, row[0]
+        
+        #check columns:
+        for i in range(len(self.board[0])):
+            if self.board[0][i] == self.board[1][i] == self.board[2][i] and self.board[0][i] != 0:
+                return True, self.board[0][i]
+
+        #check diagonals:
+        if self.board[0][0] == self.board[1][1] == self.board[2][2] and self.board[0][0] != 0:
+            return True, self.board[0][0]
+        if self.board[0][2] == self.board[1][1] == self.board[2][0] and self.board[0][2] != 0:
+            return True, self.board[0][2]
+
+        for row in self.board:
+            for cell in row:
+                if cell == 0:
+                    return False, None #Not a draw yet
+
+        return True, None #Draw
 
     def place_piece(self,loc, X):
         self.board[(loc-1)//3][(loc-1)%3] = X
@@ -146,9 +184,9 @@ class Board:
             print("-"*(len(self.B.split("\n")[0])*3 + 2))
 
 board = Board(X,O,B)
+board.print_board()
 
-for x in range(0,9):
-    board.print_board()
+for x in range(0,100):
     while True:
         loc = int(input("Enter location: "))
         valid, msg = board.is_valid_move(loc)
@@ -159,6 +197,18 @@ for x in range(0,9):
 
     board.place_piece(loc, 1 if x % 2 == 0 else 2)
     print("\n"*100)
+    board.print_board()
+    win, winner = board.check_win()
+    if win:
+        print("\n"*100)
+        if winner == 1:
+            print(X_WIN)
+        else:
+            print(O_WIN)
+        break
 
-print(X_WIN)
+
+if winner == None:
+    print("\n"*100)
+    print(DRAW)
 print(GAME_OVER)
