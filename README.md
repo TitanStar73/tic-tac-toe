@@ -2,6 +2,6 @@
 
 Simple console based tic-tac-toe game for two players.
 
-# Installation option
+# Installation options
  - Run main.py
  - Run main.exe
