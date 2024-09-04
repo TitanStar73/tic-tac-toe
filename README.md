@@ -11,3 +11,6 @@ Simple console based tic-tac-toe game for two players.
 # Installation options
  - Run main.py
  - Run main.exe
+
+# Credits
+ - Ascii art for text from [here](https://patorjk.com/software/taag/#p=display&f=Big&t=A)
